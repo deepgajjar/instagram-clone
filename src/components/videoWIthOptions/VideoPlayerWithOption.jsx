@@ -1,17 +1,26 @@
 import React from "react";
 import VideoPlayer from "../VideoPlayer/VideoPlayer";
 import { faEllipsis, faShareNodes } from "@fortawesome/free-solid-svg-icons";
-import { faCommentDots, faThumbsDown, faThumbsUp } from "@fortawesome/free-regular-svg-icons";
+import {
+  faCommentDots,
+  faThumbsDown,
+  faThumbsUp,
+} from "@fortawesome/free-regular-svg-icons";
 import IconWithName from "../otherComponents/IconWIthName";
-import './style.css';
+import "./style.css";
 
 const VideoPlayerWithOptions = () => {
   return (
     <div className="video-container">
       <VideoPlayer />
       <div className="video-options">
-        <IconWithName icon={faEllipsis} />
+        <div className="options-two">
+          <IconWithName icon={faEllipsis} className="options-two" />
+        </div>
         <div className="video-bottom-icons-container">
+          <div className="options-one">
+            <IconWithName icon={faEllipsis} className="options-two" />
+          </div>
           <IconWithName icon={faThumbsUp} title="Like" />
           <IconWithName icon={faThumbsDown} title="DisLike" />
           <IconWithName icon={faCommentDots} title="33" />

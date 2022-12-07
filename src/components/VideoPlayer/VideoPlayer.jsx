@@ -1,10 +1,10 @@
+import React, { useRef, useState, useEffect } from "react";
 import {
   faPlay,
   faPause,
   faVolumeDown,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRef, useState } from "react";
 import PrimaryButton from "../buttons/PrimaryButton";
 import "./style.css";
 
@@ -15,30 +15,29 @@ function VideoPlayer() {
   const [videoTime, setVideoTime] = useState(0);
   const [progress, setProgress] = useState(0);
 
+  window.setInterval(() => {
+    setCurrentTime(videoRef?.current?.currentTime);
+    setProgress((videoRef?.current?.currentTime / videoTime) * 100);
+  }, 1000);
+
+  useEffect(() => {
+    let vid = videoRef?.current;
+    if (currentTime == vid?.duration) {
+      setProgress(false);
+    }
+  }, [currentTime]);
+
   const videoHandler = (control) => {
     if (control === "play") {
-      videoRef.current.play();
+      videoRef?.current?.play();
       setPlaying(true);
-      var vid = document.getElementById("video1");
-      setVideoTime(vid.duration);
+      let vid = videoRef?.current;
+      setVideoTime(vid?.duration);
     } else if (control === "pause") {
-      videoRef.current.pause();
+      videoRef?.current?.pause();
       setPlaying(false);
     }
   };
-
-  const fastForward = () => {
-    videoRef.current.currentTime += 5;
-  };
-
-  const revert = () => {
-    videoRef.current.currentTime -= 5;
-  };
-
-  window.setInterval(function () {
-    setCurrentTime(videoRef.current?.currentTime);
-    setProgress((videoRef.current?.currentTime / videoTime) * 100);
-  }, 1000);
 
   return (
     <div className="video-player-container">
@@ -55,12 +54,12 @@ function VideoPlayer() {
           <p className="controlsTime">
             {Math.floor(currentTime / 60) +
               ":" +
-              ("0" + Math.floor(currentTime % 60)).slice(-2)}
+              ("0" + Math.floor(currentTime % 60))?.slice(-2)}
           </p>
           <p className="controlsTime">
             {Math.floor(videoTime / 60) +
               ":" +
-              ("0" + Math.floor(videoTime % 60)).slice(-2)}
+              ("0" + Math.floor(videoTime % 60))?.slice(-2)}
           </p>
         </div>
 
@@ -91,7 +90,6 @@ function VideoPlayer() {
             <FontAwesomeIcon
               icon={faVolumeDown}
               className="controlsIcon--small"
-              onClick={fastForward}
             />
           </div>
         </div>
@@ -101,18 +99,21 @@ function VideoPlayer() {
 
       <div className="video-bottom-bar">
         <div className="video-bottom-inner">
-          <p>I made quick edit of our italy roadtrip in september 2022. A trip of lifetime.</p>
+          <p>
+            I made quick edit of our italy roadtrip in september 2022. A trip of
+            lifetime.
+          </p>
           <div className="follow-btn-container">
             <div className="user-pic-container">
               <div className="user-pic"></div>
               <p>travel.wrld</p>
             </div>
             <PrimaryButton
-            title="Follow"
-            width="5rem"
-            height="1.7rem"
-            margin={0}
-          />
+              title="Follow"
+              width="5rem"
+              height="1.7rem"
+              margin={0}
+            />
           </div>
         </div>
       </div>

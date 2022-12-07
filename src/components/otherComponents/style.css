@@ -16,4 +16,10 @@
     font-size:0.6rem; 
     font-weight: 500;
     user-select: none;
+    display: none;
+}
+@media screen and (min-width: 530px) {
+    .title-icon-container .title {
+       display: block;
+    }
 }
