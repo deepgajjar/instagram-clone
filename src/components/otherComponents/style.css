@@ -1,0 +1,19 @@
+.video-menu-options {
+    font-size: 1.1rem;
+    color: #b2bdce;
+    margin-bottom: -8px;
+}
+.toggle-class-for-video-options {
+    color: rgb(108, 197, 153);
+}
+.title-icon-container {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.title-icon-container .title {
+    font-size:0.6rem; 
+    font-weight: 500;
+    user-select: none;
+}

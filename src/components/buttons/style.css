@@ -1,0 +1,13 @@
+.add-btn {
+    height:1.7rem;
+    color: white;
+    width: 5.7rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1.7rem;
+    font-size: 0.7rem;
+    margin-right: 1.3rem;
+     background-color: rgb(102,185,132);
+     cursor: pointer;
+ }

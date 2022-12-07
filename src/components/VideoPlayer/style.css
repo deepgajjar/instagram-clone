@@ -1,0 +1,129 @@
+/* Main Container */
+
+.video-player-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Video */
+
+.video {
+  /* object-fit: contain; */
+  /* object-fit: fill; */
+  object-fit: cover;
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+}
+.controlsContainer {
+  display: flex;
+  width: 100%;
+  z-index: 1;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* width: 100%; */
+  padding: 0 0.5%;
+  margin-top: 0.3rem;
+  /* justify-content: space-between; */
+  width: 99%;
+}
+
+.controlsIcon {
+  cursor: pointer;
+  color: white;
+}
+
+.controlsIcon--small {
+  font-size: 0.8rem;
+  cursor: pointer;
+  color: white;
+}
+
+/* The time controls section */
+.controll-columns {
+  position: absolute;
+  top: 16px;
+  margin: 0 2%;
+  display: flex;
+  flex-direction: column;
+  /* height: 300px; */
+  width: 96%;
+}
+.timecontrols {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  position: absolute;
+  width: 100%;
+}
+.video-time-indicators {
+  display: flex;
+  padding: 0 0.5%;
+  justify-content: space-between;
+  width: 99%;
+}
+.time_progressbarContainer {
+  background-color: gray;
+  border-radius: 15px;
+  width: 100%;
+  height: 1px;
+  z-index: 21;
+  position: relative;
+}
+
+.time_progressBar {
+  border-radius: 15px;
+  background-color: white;
+  height: 1.5px;
+  position: absolute;
+  top:-0.75px;
+}
+
+.controlsTime {
+  font-size: 0.7rem;
+  margin: 0 0 0.3rem 0;
+  color: white;
+}
+
+.video-bottom-bar {
+  display: flex;
+  padding:0 2%;
+  /* background-color: purple; */
+  /* color:yellow; */
+  width: 96%;
+  position:absolute;
+  bottom: 0;
+}
+.video-bottom-inner {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  /* background-color: red; */
+}
+.video-bottom-inner p {
+  letter-spacing: 0.5px;
+  color: white;
+  font-size: 0.8rem;
+}
+.follow-btn-container {
+  display: flex;
+  align-items: center;
+justify-content: space-between;
+}
+.user-pic-container {
+  display: flex;
+  margin:-7px 0 1.3px 0;
+align-items: center;
+}
+.user-pic-container .user-pic {
+  height: 2rem;
+  width: 2rem;
+  margin-right:6px ;
+  border-radius: 6px;
+  background-color: aquamarine;
+}

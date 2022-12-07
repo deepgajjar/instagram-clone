@@ -1,0 +1,38 @@
+.input-container {
+    display: flex;
+    width: 100%;
+  }
+  
+  .icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width:2.5rem;
+    border: 1px solid  #E2E5E7;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-right: none;
+    padding-left: 0.2rem;
+    text-align: center;
+  }
+  .icon {
+    font-size: 0.9rem;
+    color: #c1c9d8;
+  }
+  .input-field {
+    color: #c1c9d8;
+    width: 100%;
+    padding: 0.6rem  0.6rem  0.6rem 0.2rem;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border: 1px solid  #E2E5E7;
+    border-left: none;
+    outline: none;
+  }
+  .input-field::placeholder {
+    color: rgb(155,168,191);
+  }
+  /* .input-field:focus {
+    border: 2px solid dodgerblue;
+  }
+   */

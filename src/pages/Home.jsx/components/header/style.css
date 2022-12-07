@@ -1,0 +1,81 @@
+.horizontal-header {
+  height: 4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 98vw;
+  flex: 2;
+  box-shadow: 1.5px 1.5px rgb(240, 240, 240);
+}
+.horizontal-header .title {
+  margin-left: 2.5%;
+  color: rgb(49, 50, 52);
+  font-size: 1.35rem;
+  user-select: none;
+}
+.right-portion {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 0;
+}
+.plus-icon {
+  height: 0.8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 0.8rem;
+  margin-right: 0.4rem;
+  border-radius: 50%;
+  border: 1px solid white;
+}
+.header-search-bar {
+  display: none;
+}
+.iconStyle {
+  font-size: 0.55rem;
+}
+.hamburger-container {
+  display: flex;
+  margin-left: 1.4rem;
+  align-items: center;
+}
+.hamburger-icon {
+  font-size: 1.2rem;
+  margin-right: 1.2rem;
+  cursor: pointer;
+}
+
+@media screen and (min-width: 480px) {
+  .horizontal-header {
+    width: 96vw;
+  }
+}
+
+@media screen and (min-width: 781px) {
+  .horizontal-header {
+    /* width: 69vw; */
+    width: 71.5vw;
+  }
+  .hamburger-icon {
+    display: none;
+  }
+  .header-search-bar {
+    display: block;
+  }
+  .right-portion {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 4.5%;
+  }
+}
+
+@media screen and (min-width: 1102px) {
+  .hamburger-icon {
+    display: none;
+  }
+  .horizontal-header {
+    width: 74vw;
+  }
+}
