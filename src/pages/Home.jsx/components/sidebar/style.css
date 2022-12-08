@@ -39,9 +39,15 @@
   margin: 1.2rem 0;
   color: rgb(165, 177, 198);
   cursor: pointer;
+  font-weight: bold;
+}
+.toggled-item-for-text {
+  color:#11141c
+}
+.toggled-on-item-select {
+  color: rgb(108, 197, 153);
 }
 .sidebar-icons {
-  color: rgb(108, 197, 153);
   font-size: 1.1rem;
   margin-right: 10%;
 }

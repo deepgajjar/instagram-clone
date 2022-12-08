@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { PrimaryButton, TextField } from "../../../../components";
 import "./style.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,6 +15,10 @@ const sideBarOptions = [
   { title: "Notification", icon: faBell },
 ];
 const SideBar = ({ isSideBarOpen, onClickHamburger }) => {
+  const [selectedItem, setSelectedItem] = useState(0);
+  const onItemSelectHandler = (index) => {
+    setSelectedItem(index);
+  };
   return (
     <div
       className={`vertical-side-bar ${
@@ -37,10 +41,19 @@ const SideBar = ({ isSideBarOpen, onClickHamburger }) => {
       </div>
       <div>
         <ul className="side-bar-options">
-          {sideBarOptions?.map((item) => (
-            <li>
-              <FontAwesomeIcon icon={item?.icon} className="sidebar-icons" />
-              {item?.title}
+          {sideBarOptions?.map((item, index) => (
+            <li onClick={() => onItemSelectHandler(index)}>
+              <FontAwesomeIcon
+                icon={item?.icon}
+                className={`sidebar-icons ${
+                  index === selectedItem && "toggled-on-item-select"
+                }`}
+              />
+              <span
+                className={index === selectedItem && "toggled-item-for-text"}
+              >
+                {item?.title}
+              </span>
             </li>
           ))}
         </ul>
