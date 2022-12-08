@@ -9,10 +9,10 @@ import {
 import IconWithName from "../otherComponents/IconWIthName";
 import "./style.css";
 
-const VideoPlayerWithOptions = () => {
+const VideoPlayerWithOptions = (props) => {
   return (
     <div className="video-container">
-      <VideoPlayer />
+      <VideoPlayer {...props} />
       <div className="video-options">
         <div className="options-two">
           <IconWithName icon={faEllipsis} className="options-two" />

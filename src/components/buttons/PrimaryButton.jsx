@@ -8,14 +8,14 @@ const PrimaryButton = ({
   width,
   borderRadius,
   margin,
-  title
+  title,
 }) => {
   return (
     <div
       className="add-btn"
-      style={{ backgroundColor, height, width, borderRadius,margin }}
+      style={{ backgroundColor, height, width, borderRadius, margin }}
     >
-      {!!children?children:title}
+      {!!children ? children : title}
     </div>
   );
 };

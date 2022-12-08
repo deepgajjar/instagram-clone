@@ -1,101 +1,170 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, {
+  useRef,
+  useState,
+  useEffect,
+  useLayoutEffect,
+  useCallback,
+} from "react";
 import {
   faPlay,
   faPause,
   faVolumeDown,
+  faVolumeMute,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PrimaryButton from "../buttons/PrimaryButton";
 import "./style.css";
+import useElementOnScreen from "../../hooks/useElementOnScreen";
 
-function VideoPlayer() {
-  const videoRef = useRef(null);
-  const [playing, setPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [videoTime, setVideoTime] = useState(0);
-  const [progress, setProgress] = useState(0);
-
-  window.setInterval(() => {
-    setCurrentTime(videoRef?.current?.currentTime);
-    setProgress((videoRef?.current?.currentTime / videoTime) * 100);
-  }, 1000);
-
-  useEffect(() => {
-    let vid = videoRef?.current;
-    if (currentTime == vid?.duration) {
-      setProgress(false);
-    }
-  }, [currentTime]);
-
-  const videoHandler = (control) => {
-    if (control === "play") {
-      videoRef?.current?.play();
-      setPlaying(true);
-      let vid = videoRef?.current;
-      setVideoTime(vid?.duration);
-    } else if (control === "pause") {
-      videoRef?.current?.pause();
-      setPlaying(false);
-    }
+function VideoPlayer({ videoUrl, isAllMuted, setIsAllMuted }) {
+  const options = {
+    root: null,
+    rootMargin: "0px",
+    threshold: 0.5,
   };
 
+  const videoRef = useRef();
+  const intervalRef = useRef();
+  const isVisibile = useElementOnScreen(options, videoRef);
+  const [videoStates, setVideoStates] = useState({
+    currentTime: 0,
+    videoTime: 0,
+    progress: 0,
+    playing: false,
+  });
+  const [isMuted, setIsMuted] = useState(false);
+  useEffect(() => {
+    !isAllMuted && setIsMuted(true);
+  }, [isAllMuted]);
+  useEffect(() => {
+    let vid = videoRef?.current;
+    setVideoStates((prevState) => ({
+      ...prevState,
+      videoTime: vid?.duration,
+    }));
+    if (isVisibile) {
+      if (!videoStates?.playing) {
+        intervalRef.current = setInterval(() => {
+          setVideoStates((prevState) => ({
+            ...prevState,
+            currentTime: vid.currentTime,
+            progress: (vid?.currentTime / vid?.duration) * 100,
+          }));
+        }, 300);
+        videoRef?.current?.play();
+        setVideoStates((prevState) => ({
+          ...prevState,
+          playing: !prevState?.playing,
+        }));
+      }
+    } else {
+      if (videoStates?.playing) {
+        clearInterval(intervalRef?.current);
+        videoRef?.current?.pause();
+        setVideoStates((prevState) => ({
+          ...prevState,
+          playing: !prevState?.playing,
+        }));
+      }
+    }
+  }, [isVisibile]);
+  useLayoutEffect(() => {
+    setVideoStates((prevState) => ({
+      ...prevState,
+      videoTime: videoRef?.current?.duration,
+    }));
+    let percentage = Math.floor(
+      (videoRef?.current?.currentTime / videoRef?.current?.duration) * 100
+    );
+    if (percentage == 100) {
+      clearInterval(intervalRef?.current);
+      setVideoStates((prevState) => ({
+        ...prevState,
+        playing: !prevState?.playing,
+      }));
+    }
+  }, [videoStates?.currentTime, videoRef?.current, videoStates?.videoTime]);
+
+  const formattedTime = useCallback((time) => {
+    return (
+      Math.floor(time / 60) + ":" + ("0" + Math.floor(time % 60))?.slice(-2)
+    );
+  }, []);
+
+  const onVideoClick = () => {
+    let vid = videoRef?.current;
+    if (videoStates?.playing) {
+      clearInterval(intervalRef.current);
+      videoRef.current.pause();
+    } else {
+      videoRef.current.play();
+      intervalRef.current = setInterval(() => {
+        setVideoStates((prevState) => ({
+          ...prevState,
+          currentTime: vid.currentTime,
+          progress: (vid?.currentTime / vid?.duration) * 100,
+        }));
+      }, 300);
+    }
+    setVideoStates((prevState) => ({
+      ...prevState,
+      playing: !prevState?.playing,
+    }));
+  };
+
+  const muteHandler = () => {
+    isAllMuted && setIsAllMuted(false);
+    setIsMuted((prev) => !prev);
+  };
   return (
     <div className="video-player-container">
       <video
         id="video1"
         ref={videoRef}
         className="video"
-        src="/video/testingvideo.mp4"
+        src={videoUrl}
+        autoplay={true}
+        muted={isAllMuted ? "muted" : !isMuted ? "muted" : ""}
+        onClick={() => onVideoClick()}
       ></video>
-
-      {/* newly maded controlls */}
       <div className="controll-columns">
         <div className="video-time-indicators">
           <p className="controlsTime">
-            {Math.floor(currentTime / 60) +
-              ":" +
-              ("0" + Math.floor(currentTime % 60))?.slice(-2)}
+            {formattedTime(videoStates?.currentTime)}
           </p>
           <p className="controlsTime">
-            {Math.floor(videoTime / 60) +
-              ":" +
-              ("0" + Math.floor(videoTime % 60))?.slice(-2)}
+            {videoStates?.videoTime
+              ? formattedTime(videoStates?.videoTime)
+              : "0:00"}
           </p>
         </div>
-
         <div className="time_progressbarContainer">
           <div
-            style={{ width: `${progress}%` }}
+            style={{ width: `${videoStates?.progress}%` }}
             className="time_progressBar"
           ></div>
         </div>
-        {/*  */}
         <div className="controlsContainer">
           <div className="controls">
-            {playing ? (
-              <FontAwesomeIcon
-                icon={faPause}
-                onClick={() => videoHandler("pause")}
-                className="controlsIcon--small"
-              />
-            ) : (
-              <FontAwesomeIcon
-                icon={faPlay}
-                onClick={() => videoHandler("play")}
-                className="controlsIcon--small"
-                alt=""
-                src="/play.svg"
-              />
-            )}
             <FontAwesomeIcon
-              icon={faVolumeDown}
+              icon={videoStates?.playing ? faPause : faPlay}
+              onClick={() => onVideoClick()}
               className="controlsIcon--small"
+            />
+            <FontAwesomeIcon
+              icon={
+                isAllMuted
+                  ? faVolumeMute
+                  : !isMuted
+                  ? faVolumeMute
+                  : faVolumeDown
+              }
+              className="controlsIcon--small"
+              onClick={muteHandler}
             />
           </div>
         </div>
-        {/*  */}
       </div>
-      {/* end */}
 
       <div className="video-bottom-bar">
         <div className="video-bottom-inner">

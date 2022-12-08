@@ -1,15 +1,15 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import "./style.css";
 import Header from "./components/header/Header";
 import SideBar from "./components/sidebar/SideBar";
-import VideoPlayerWithOptions from "../../components/videoWIthOptions/VideoPlayerWithOption";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
+import VideoSection from "./components/videoSection/VideoSection";
 
+const videosUrls =["/video/testingvideo.mp4","/video/videoWithAudio.mp4","/video/videoWithAudio.mp4","/video/videoWithAudio.mp4"]
 const Home = () => {
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
   const onClickHamburger = useCallback(() => {
-    console.log("icon clicked ");
     setIsSideBarOpen((prev) => !prev);
   }, []);
 
@@ -22,15 +22,7 @@ const Home = () => {
         />
         <div className="column-container">
           <Header onClickHamburger={onClickHamburger} />
-          {/* <div className="video-options-container"> */}
-            <div className="parent-container">
-              <div className="child-container">
-                {[1, 2]?.map((item) => {
-                  return <VideoPlayerWithOptions />;
-                })}
-              </div>
-            </div>
-          {/* </div> */}
+          <VideoSection videos={videosUrls} />
           <div className="scroll-up-icon">
             <FontAwesomeIcon icon={faArrowUp} className="up-arrow"/> 
           </div>
