@@ -33,6 +33,21 @@ function VideoPlayer({ videoUrl, isAllMuted, setIsAllMuted }) {
     playing: false,
   });
   const [isMuted, setIsMuted] = useState(false);
+  const progressBarAndTimeAnimation = () => {
+    let vid = videoRef?.current;
+    setVideoStates((prevState) => ({
+      ...prevState,
+      currentTime: vid.currentTime,
+      progress: (vid?.currentTime / vid?.duration) * 100,
+    }));
+    cancelAnimationFrame(intervalRef?.current);
+    setTimeout(() => {
+      if (!videoRef?.current?.paused)
+        intervalRef.current = requestAnimationFrame(
+          progressBarAndTimeAnimation
+        );
+    }, 1000 / 30);
+  };
   useEffect(() => {
     !isAllMuted && setIsMuted(true);
   }, [isAllMuted]);
@@ -44,22 +59,18 @@ function VideoPlayer({ videoUrl, isAllMuted, setIsAllMuted }) {
     }));
     if (isVisibile) {
       if (!videoStates?.playing) {
-        intervalRef.current = setInterval(() => {
-          setVideoStates((prevState) => ({
-            ...prevState,
-            currentTime: vid.currentTime,
-            progress: (vid?.currentTime / vid?.duration) * 100,
-          }));
-        }, 300);
         videoRef?.current?.play();
         setVideoStates((prevState) => ({
           ...prevState,
           playing: !prevState?.playing,
         }));
+        intervalRef.current = requestAnimationFrame(
+          progressBarAndTimeAnimation
+        );
       }
     } else {
       if (videoStates?.playing) {
-        clearInterval(intervalRef?.current);
+        cancelAnimationFrame(intervalRef?.current);
         videoRef?.current?.pause();
         setVideoStates((prevState) => ({
           ...prevState,
@@ -73,17 +84,17 @@ function VideoPlayer({ videoUrl, isAllMuted, setIsAllMuted }) {
       ...prevState,
       videoTime: videoRef?.current?.duration,
     }));
-    let percentage = Math.floor(
-      (videoRef?.current?.currentTime / videoRef?.current?.duration) * 100
-    );
-    if (percentage == 100) {
-      clearInterval(intervalRef?.current);
+    if (
+      Math.floor(videoStates?.currentTime) ===
+      Math.floor(videoStates?.videoTime)
+    ) {
+      cancelAnimationFrame(intervalRef?.current);
       setVideoStates((prevState) => ({
         ...prevState,
-        playing: !prevState?.playing,
+        playing: false,
       }));
     }
-  }, [videoStates?.currentTime, videoRef?.current, videoStates?.videoTime]);
+  }, [videoStates?.currentTime]);
 
   const formattedTime = useCallback((time) => {
     return (
@@ -92,19 +103,12 @@ function VideoPlayer({ videoUrl, isAllMuted, setIsAllMuted }) {
   }, []);
 
   const onVideoClick = () => {
-    let vid = videoRef?.current;
     if (videoStates?.playing) {
-      clearInterval(intervalRef.current);
+      cancelAnimationFrame(intervalRef?.current);
       videoRef.current.pause();
     } else {
       videoRef.current.play();
-      intervalRef.current = setInterval(() => {
-        setVideoStates((prevState) => ({
-          ...prevState,
-          currentTime: vid.currentTime,
-          progress: (vid?.currentTime / vid?.duration) * 100,
-        }));
-      }, 300);
+      intervalRef.current = requestAnimationFrame(progressBarAndTimeAnimation);
     }
     setVideoStates((prevState) => ({
       ...prevState,
